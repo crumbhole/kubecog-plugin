@@ -14,23 +14,23 @@ jobs:
         # build and publish in parallel: linux/386, linux/amd64, windows/386, windows/amd64, darwin/386, darwin/amd64
         goos: [linux, darwin]
     steps:
-    - uses: actions/checkout@v2
-    - uses: wangyoucao577/go-release-action@v1.14
+    - uses: actions/checkout@v3
+    - uses: wangyoucao577/go-release-action@v1.25
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
         goarch: amd64
-        goversion: "https://golang.org/dl/go1.15.8.linux-amd64.tar.gz"
-        binary_name: "vault-replacer"
+        goversion: "https://golang.org/dl/go1.17.7.linux-amd64.tar.gz"
+        binary_name: "crumblecog-plugin"
         extra_files: LICENSE README.md
   push_to_registry:
     name: Push Docker image to GitHub Packages
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Get git tag
-        uses: little-core-labs/get-git-tag@v3.0.1
+        uses: little-core-labs/get-git-tag@v3.0.2
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
