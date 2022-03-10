@@ -10,15 +10,17 @@ import (
 	"regexp"
 )
 
-const VALUES_DEFAULT_PATH = `./cogvalues.yaml`
-const VALUES_ENV = `COG_VALUES_PATH`
+// valuesEnv is the name of the environment variable controlling where to find values yaml
+const valuesEnv = `COG_VALUES_PATH`
+
+// valuesDefaultPath is the local file path used if nothing is given in valuesEnv
+const valuesDefaultPath = `./cogvalues.yaml`
 
 func getPath() string {
-	if envpath, pathpresent := os.LookupEnv(VALUES_ENV); pathpresent {
+	if envpath, pathpresent := os.LookupEnv(valuesEnv); pathpresent {
 		return envpath
-	} else {
-		return VALUES_DEFAULT_PATH
 	}
+	return valuesDefaultPath
 }
 
 func tryLocalFile(path string) ([]byte, error) {
@@ -36,6 +38,9 @@ func tryRemote(path string, key string) ([]byte, error) {
 	return *val, err
 }
 
+// Values is a function to get you a set of values returned via the interface{} which
+// have been extracted from a .yaml file coming from a local file or secret stored key/value
+// pair
 func Values() (interface{}, error) {
 	path := getPath()
 	reSplit := regexp.MustCompile(`\s*\~\s*`)
