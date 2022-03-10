@@ -1,0 +1,5 @@
+dns:
+  provider: cloudflare
+  certificates: lets-encrypt
+  acme_method: dns01
+size: medium

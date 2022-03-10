@@ -1,26 +1,16 @@
 package main
 
 import (
-	"bufio"
-	"fmt"
-	"github.com/crumbhole/crumblecog-plugin/src/substitution"
-	"io/ioutil"
+	"github.com/crumbhole/crumblecog-plugin/src/engine"
+	"github.com/crumbhole/crumblecog-plugin/src/values"
 	"log"
 	"os"
 	"path/filepath"
 	"regexp"
 )
 
-type scanner struct{}
-
-func (s *scanner) process(input []byte) error {
-	subst := substitution.Substitutor{}
-	modifiedcontents, err := subst.Substitute(input)
-	if err != nil {
-		return err
-	}
-	fmt.Printf("---\n%s\n", modifiedcontents)
-	return nil
+type scanner struct {
+	engine engine.Engine
 }
 
 func (s *scanner) scanFile(path string, info os.FileInfo, err error) error {
@@ -32,11 +22,7 @@ func (s *scanner) scanFile(path string, info os.FileInfo, err error) error {
 	}
 	fileRegexp := regexp.MustCompile(`\.ya?ml$`)
 	if fileRegexp.MatchString(path) {
-		filecontents, err := ioutil.ReadFile(path)
-		if err != nil {
-			return err
-		}
-		err = s.process(filecontents)
+		err := s.engine.Run(path)
 		if err != nil {
 			return err
 		}
@@ -49,26 +35,17 @@ func (s *scanner) scanDir(path string) error {
 }
 
 func main() {
-	stat, _ := os.Stdin.Stat()
-	s := scanner{}
-	if (stat.Mode() & os.ModeCharDevice) == 0 {
-		reader := bufio.NewReader(os.Stdin)
-		filecontents, err := ioutil.ReadAll(reader)
-		if err != nil {
-			log.Fatal(err)
-		}
-		err = s.process(filecontents)
-		if err != nil {
-			log.Fatal(err)
-		}
-	} else {
-		dir, err := os.Getwd()
-		if err != nil {
-			log.Fatal(err)
-		}
-		err = s.scanDir(dir)
-		if err != nil {
-			log.Fatal(err)
-		}
+	vals, err := values.Values()
+	if err != nil {
+		log.Fatal(err)
+	}
+	s := scanner{engine: engine.Engine{Values: vals}}
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = s.scanDir(dir)
+	if err != nil {
+		log.Fatal(err)
 	}
 }

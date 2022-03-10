@@ -11,19 +11,26 @@ all: code-vet code-fmt test build/crumblecog-plugin
 clean:
 	$(RM) -rf build
 
-test:
+get: $(DEPS)
+	go get ./...
+	go get github.com/otiai10/copy
+
+test: get
 	go test ./...
+
+test_verbose: get
+	go test -v ./...
 
 build/crumblecog-plugin: $(DEPS)
 	mkdir -p build
 	go build -o build ./...
 
-code-vet: $(DEPS)
+code-vet: get $(DEPS)
 ## Run go vet for this project. More info: https://golang.org/cmd/vet/
 	@echo go vet
 	go vet $$(go list ./... )
 
-code-fmt: $(DEPS)
+code-fmt: get $(DEPS)
 ## Run go fmt for this project
 	@echo go fmt
 	go fmt $$(go list ./... )
