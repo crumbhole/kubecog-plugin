@@ -6,12 +6,12 @@ import (
 	//	"bytes"
 	//  "fmt"
 	"github.com/otiai10/copy"
-	"strings"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"testing"
 	"regexp"
+	"strings"
+	"testing"
 )
 
 const (
