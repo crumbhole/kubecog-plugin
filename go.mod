@@ -1,6 +1,6 @@
 module github.com/crumbhole/crumblecog-plugin
 
-go 1.17
+go 1.18
 
 require (
 	github.com/crumbhole/argocd-vault-replacer v0.0.0-20220309093630-e86548a11f60
