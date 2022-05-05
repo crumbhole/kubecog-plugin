@@ -16,7 +16,7 @@ type Engine struct {
 // Run will use the Engine's values to templatise one file, in place, given by path
 func (e *Engine) Run(path string) error {
 	fmt.Printf("Checking path %s\n", path)
-	tmpl := template.New("engine")
+	tmpl := template.New(path)
 	filecontents, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
