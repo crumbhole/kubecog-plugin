@@ -15,7 +15,7 @@ const valuesEnv = `COG_VALUES_PATH`
 // tells the system which cog files to read from
 const kubecogEnable = `./.kubecog.yaml`
 
-func basePath() string {
+func getBasePath() string {
 	if envpath, pathpresent := os.LookupEnv(valuesEnv); pathpresent {
 		return envpath
 	}
@@ -67,7 +67,13 @@ func Values() (map[string]interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	basePath := basePath()
+	basePath, err := fromGit()
+	if err != nil {
+		return nil, err
+	}
+	if basePath == `` {
+		basePath = getBasePath()
+	}
 	var values map[string]interface{}
 	for _, path := range paths {
 		readPath := basePath + path

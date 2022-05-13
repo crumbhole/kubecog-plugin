@@ -6,7 +6,8 @@ import (
 	"testing"
 )
 
-func TestDefault(t *testing.T) {
+func TestDefaultValues(t *testing.T) {
+	os.Unsetenv(gitURLEnv)
 	res, err := Values()
 	if err != nil {
 		t.Fatal(err)
@@ -22,6 +23,7 @@ func TestDefault(t *testing.T) {
 }
 
 func TestPathEnv(t *testing.T) {
+	os.Unsetenv(gitURLEnv)
 	cwd, err := os.Getwd()
 	if err != nil {
 		t.Fatal(err)
