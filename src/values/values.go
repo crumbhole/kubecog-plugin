@@ -1,65 +1,91 @@
 package values
 
 import (
-	"github.com/crumbhole/argocd-vault-replacer/src/bwvaluesource"
-	"github.com/crumbhole/argocd-vault-replacer/src/substitution"
-	"github.com/crumbhole/argocd-vault-replacer/src/vaultvaluesource"
+	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
-	"regexp"
+	"syscall"
 )
 
 // valuesEnv is the name of the environment variable controlling where to find values yaml
 const valuesEnv = `COG_VALUES_PATH`
 
-// valuesDefaultPath is the local file path used if nothing is given in valuesEnv
-const valuesDefaultPath = `./cogvalues.yaml`
+// kubecogEnable is the file that enables kubecog and
+// tells the system which cog files to read from
+const kubecogEnable = `./.kubecog.yaml`
 
-func getPath() string {
+func basePath() string {
 	if envpath, pathpresent := os.LookupEnv(valuesEnv); pathpresent {
 		return envpath
 	}
-	return valuesDefaultPath
+	cwd, _ := os.Getwd()
+	return cwd + `/`
 }
 
-func tryLocalFile(path string) ([]byte, error) {
-	return ioutil.ReadFile(path)
+type kubecog struct {
+	Kubecog []string `json:"kubecog"`
 }
 
-func tryRemote(path string, key string) ([]byte, error) {
-	var vs substitution.ValueSource
-	if _, bwpresent := os.LookupEnv(`BW_SESSION`); bwpresent {
-		vs = bwvaluesource.BitwardenValueSource{}
-	} else {
-		vs = vaultvaluesource.VaultValueSource{}
+func valuePaths() ([]string, error) {
+	contents, err := ioutil.ReadFile(kubecogEnable)
+	if err != nil {
+		return nil, err
 	}
-	val, err := vs.GetValue([]byte(path), []byte(key))
-	return *val, err
+	var kubecogPaths kubecog
+	err = yaml.Unmarshal(contents, &kubecogPaths)
+	return kubecogPaths.Kubecog, err
+}
+
+func mergeMaps(a, b map[string]interface{}) map[string]interface{} {
+	out := make(map[string]interface{}, len(a))
+	for k, v := range a {
+		out[k] = v
+	}
+	for k, v := range b {
+		if v, ok := v.(map[string]interface{}); ok {
+			if bv, ok := out[k]; ok {
+				if bv, ok := bv.(map[string]interface{}); ok {
+					out[k] = mergeMaps(bv, v)
+					continue
+				}
+			}
+		}
+		out[k] = v
+	}
+	return out
 }
 
 // Values is a function to get you a set of values returned via the interface{} which
-// have been extracted from a .yaml file coming from a local file or secret stored key/value
-// pair
-func Values() (interface{}, error) {
-	path := getPath()
-	reSplit := regexp.MustCompile(`\s*\~\s*`)
-	splitPath := reSplit.Split(string(path), 2)
-	var filecontents []byte
-	var err error
-	if len(splitPath) == 2 {
-		filecontents, err = tryRemote(splitPath[0], splitPath[1])
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		filecontents, err = tryLocalFile(path)
-		if err != nil {
-			return nil, err
-		}
+// have been extracted from one or more .yaml files coming from a local file
+func Values() (map[string]interface{}, error) {
+	paths, err := valuePaths()
+	if e, ok := err.(*os.PathError); ok && e.Err == syscall.ENOENT {
+		print("No .kubecog.yaml\n")
+		return nil, nil
 	}
-	var values interface{}
-	err = yaml.Unmarshal(filecontents, &values)
+	if err != nil {
+		return nil, err
+	}
+	basePath := basePath()
+	var values map[string]interface{}
+	for _, path := range paths {
+		readPath := basePath + path
+		fmt.Printf("|Reading %v\n", readPath)
+		contents, err := ioutil.ReadFile(readPath)
+		if err != nil {
+			return nil, err
+		}
+		fmt.Printf("|Contents %v\n", contents)
+		var theseValues map[string]interface{}
+		err = yaml.Unmarshal(contents, &theseValues)
+		if err != nil {
+			return nil, err
+		}
+		fmt.Printf("|Got %v\n", theseValues)
+		values = mergeMaps(values, theseValues)
+		fmt.Printf("|Finally %v\n", values)
+	}
 
 	return values, err
 }

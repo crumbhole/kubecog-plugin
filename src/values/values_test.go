@@ -12,7 +12,7 @@ func TestDefault(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	expected := make(map[interface{}]interface{})
+	expected := make(map[string]interface{})
 	expected[`abc`] = `def`
 	expected[`foo`] = make(map[interface{}]interface{})
 	expected[`foo`].(map[interface{}]interface{})[`bar`] = `123`
@@ -26,13 +26,13 @@ func TestPathEnv(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	os.Setenv(valuesEnv, cwd+`/subdir/test.yaml`)
+	os.Setenv(valuesEnv, cwd+`/subdir/`)
 	res, err := Values()
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	expected := make(map[interface{}]interface{})
+	expected := make(map[string]interface{})
 	expected[`pet`] = make(map[interface{}]interface{})
 	expected[`pet`].(map[interface{}]interface{})[`frog`] = `kiss`
 	expected[`pet`].(map[interface{}]interface{})[`dog`] = `pat`

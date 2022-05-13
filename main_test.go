@@ -30,6 +30,10 @@ func (c *checker) checkExpected(path string, info os.FileInfo, err error) error 
 	if info.IsDir() {
 		return nil
 	}
+	kubecogRegexp := regexp.MustCompile(`\.kubecog\.yaml$`)
+	if kubecogRegexp.MatchString(path) {
+		return nil
+	}
 	fileRegexp := regexp.MustCompile(`\.yaml$`)
 	if fileRegexp.MatchString(path) {
 		expectedPath := strings.Replace(path, `.yaml`, `.expectyaml`, 1)
@@ -52,17 +56,19 @@ func (c *checker) checkExpected(path string, info os.FileInfo, err error) error 
 }
 
 func (c *checker) checkDir(path string) error {
-	os.Setenv(`COG_VALUES_PATH`, path+`/cogvalues.yml`)
+	cwd, _ := os.Getwd()
+	os.Chdir(path)
+	defer os.Chdir(cwd)
 	vals, err := values.Values()
 	if err != nil {
 		return err
 	}
 	s := scanner{engine: engine.Engine{Values: vals}}
-	err = s.scanDir(path)
+	err = s.scanDir(`.`)
 	if err != nil {
 		return err
 	}
-	return filepath.Walk(path, c.checkExpected)
+	return filepath.Walk(`.`, c.checkExpected)
 }
 
 // Finds directories under ./test and evaluates all the .yaml/.ymls

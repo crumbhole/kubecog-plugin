@@ -39,6 +39,9 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	if vals == nil {
+		return
+	}
 	s := scanner{engine: engine.Engine{Values: vals}}
 	dir, err := os.Getwd()
 	if err != nil {
