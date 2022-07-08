@@ -4,8 +4,21 @@ This is an init plugin for [argocd-lovely-plugin](https://github.com/crumbhole/a
 
 ## Usage
 
-Install into argocd alongside lovely and and add to LOVELY_PREPROCESSORS.
+Install into argocd alongside lovely and and add to ARGOCD_ENV_LOVELY_PREPROCESSORS.
 
-It uses go's templating language, the same as helm does. It doesn't have any of the special features that helm adds to the language. Values will appear directly as {{ .foo.bar }} with no .Values prefix, unlike helm.
+You must place a .kubecog.yaml in the directory you want processing with this plugin, otherwise it will not do anything.
 
-You probably want to set COG_VALUES_PATH is where to find the values file. This can be a local path.
+It uses gomplate (go's templating language), the same as helm does. Left and right delimiters default to [[ and ]]. They can be overridden in .kubecog.yaml for your specific templates if that is convenient.
+
+Environment:
+
+- ARGOCD_ENV_KUBECOG_URL_PREFIX: *Required* Set this to a gomplate URL for where to find your values files for context in gomplate.
+- ARGOCD_ENV_KUBECOG_GOMPLATE_PATH: Set this to where to find gomplate binary if it is not on your path.
+
+## .kubecog.yaml
+kubecog:
+  contextname: context.yml
+delimiters: (all optional)
+  left: <leftdelim>
+  right: <rightdelim>
+

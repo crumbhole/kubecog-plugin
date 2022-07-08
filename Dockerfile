@@ -1,4 +1,5 @@
 FROM golang:1.18.1 as builder
+COPY --from=hairyhenderson/gomplate:v3.11.1-alpine /bin/gomplate /usr/local/bin/gomplate
 ADD . /build
 WORKDIR /build
 RUN go vet ./...
@@ -7,4 +8,5 @@ RUN go build -buildvcs=false -o build/crumblecog-plugin
 
 FROM alpine as putter
 COPY --from=builder /build/build/crumblecog-plugin .
-ENTRYPOINT [ "mv", "crumblecog-plugin", "/custom-tools/" ]
+COPY --from=builder /usr/local/bin/gomplate .
+ENTRYPOINT [ "mv", "crumblecog-plugin", "gomplate", "/custom-tools/" ]

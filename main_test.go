@@ -56,7 +56,7 @@ func (c *checker) checkExpected(path string, info os.FileInfo, err error) error 
 func (c *checker) checkDir(path string) error {
 	cwd, _ := os.Getwd()
 	os.Chdir(path)
-	os.Setenv(`ARGOCD_ENV_KUBECOG_VALUES_URL_PREFIX`, `file:///`+cwd+`/`+path+`/`)
+	os.Setenv(`ARGOCD_ENV_KUBECOG_URL_PREFIX`, `file:///`+cwd+`/`+path+`/`)
 	defer os.Chdir(cwd)
 	config, err := values.Values()
 	if err != nil {

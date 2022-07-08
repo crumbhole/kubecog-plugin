@@ -14,7 +14,7 @@ import (
 const (
 	gomplateDefault = `gomplate`
 	gomplateEnv     = `ARGOCD_ENV_KUBECOG_GOMPLATE_PATH`
-	urlEnv          = `ARGOCD_ENV_KUBECOG_VALUES_URL_PREFIX`
+	urlEnv          = `ARGOCD_ENV_KUBECOG_URL_PREFIX`
 	leftDefault     = `[[`
 	rightDefault    = `]]`
 )
