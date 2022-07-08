@@ -23,7 +23,7 @@ jobs:
       with:
         args: -O gomplate https://github.com/hairyhenderson/gomplate/releases/download/v3.11.1/gomplate_linux-amd64
     - name: Set gomplate executable
-      run: chmod +x gomplate && mv gomplate /usr/local/bin/gomplate
+      run: sudo chmod +x gomplate && sudo mv gomplate /usr/local/bin/gomplate
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
