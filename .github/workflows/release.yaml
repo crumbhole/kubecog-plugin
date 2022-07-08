@@ -15,6 +15,12 @@ jobs:
         goos: [linux, darwin]
     steps:
     - uses: actions/checkout@v3
+    - name: Get gomplate
+      uses: wei/wget@v1
+      with:
+        args: -O /usr/local/bin/gomplate https://github.com/hairyhenderson/gomplate/releases/download/v3.11.1/gomplate_linux-amd64
+    - name: Set gomplate executable
+      run: chmod +x /usr/local/bin/gomplate
     - uses: wangyoucao577/go-release-action@v1.29
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
