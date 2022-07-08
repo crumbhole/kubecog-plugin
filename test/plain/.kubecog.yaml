@@ -1,2 +1,2 @@
 kubecog:
-  - cogvalues.yml
+  base: cogvalues.yml

@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: argocd-cm
 data:
-  size: {{ .size }}
-  dns: {{ .dns.provider -}}
+  size: {{ .base.size }}
+  dns: {{ .base.dns.provider -}}
