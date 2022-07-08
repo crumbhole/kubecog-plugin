@@ -1,0 +1,5 @@
+kubecog:
+  base: cogvalues.yml
+delimiters:
+  left: 🚨
+  right: 🐞

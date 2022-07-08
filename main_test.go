@@ -3,8 +3,6 @@ package main
 import (
 	"github.com/crumbhole/crumblecog-plugin/src/engine"
 	"github.com/crumbhole/crumblecog-plugin/src/values"
-	//	"bytes"
-	//  "fmt"
 	"github.com/otiai10/copy"
 	"io/ioutil"
 	"os"
@@ -60,11 +58,11 @@ func (c *checker) checkDir(path string) error {
 	os.Chdir(path)
 	os.Setenv(`ARGOCD_ENV_KUBECOG_VALUES_URL_PREFIX`, `file:///`+cwd+`/`+path+`/`)
 	defer os.Chdir(cwd)
-	vals, err := values.Values()
+	config, err := values.Values()
 	if err != nil {
 		return err
 	}
-	s := scanner{engine: engine.Engine{Values: vals}}
+	s := scanner{engine: engine.Engine{Config: config}}
 	err = s.scanDir(`.`)
 	if err != nil {
 		return err

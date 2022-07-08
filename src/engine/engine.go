@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"regexp"
+
+	"github.com/crumbhole/crumblecog-plugin/src/values"
 )
 
 // valuesEnv is the name of the environment variable controlling where to find values yaml
@@ -12,6 +15,8 @@ const (
 	gomplateDefault = `gomplate`
 	gomplateEnv     = `ARGOCD_ENV_KUBECOG_GOMPLATE_PATH`
 	urlEnv          = `ARGOCD_ENV_KUBECOG_VALUES_URL_PREFIX`
+	leftDefault     = `[[`
+	rightDefault    = `]]`
 )
 
 func getEnv(name string, defaultVal string) string {
@@ -25,22 +30,34 @@ func getEnv(name string, defaultVal string) string {
 // Engine is a 'class' to hold the values for doing template runs with a single set of variables
 // called values, over several golang templated files
 type Engine struct {
-	Values map[string]string
+	Config *values.Kubecog
 }
 
 // Run will use the Engine's values to templatise one file, in place, given by path
 func (e *Engine) Run(path string) error {
 	fmt.Printf("Checking path %s\n", path)
+	kubecogRegexp := regexp.MustCompile(`\.kubecog\.yaml$`)
+	if kubecogRegexp.MatchString(path) {
+		return nil
+	}
 	params := make([]string, 0)
-	params = append(params, `-f`, path, `-o`, path)
+	leftDelim := leftDefault
+	rightDelim := rightDefault
+	if e.Config.Delimiters != nil && e.Config.Delimiters.Left != `` {
+		leftDelim = e.Config.Delimiters.Left
+	}
+	if e.Config.Delimiters != nil && e.Config.Delimiters.Right != `` {
+		rightDelim = e.Config.Delimiters.Right
+	}
+	params = append(params, `-f`, path, `-o`, path, `--left-delim`, leftDelim, `--right-delim`, rightDelim)
 	urlPrefix := getEnv(urlEnv, ``)
 	if urlPrefix == `` {
 		return fmt.Errorf("Must set %s to URL prefix", urlEnv)
 	}
-	for name, contextPath := range e.Values {
+	for name, contextPath := range e.Config.Kubecog {
 		params = append(params, `-c`, name+`=`+urlPrefix+contextPath)
 	}
-	fmt.Printf("Params are %v", params)
+	fmt.Printf("Params are %v\n", params)
 	cmd := exec.Command(getEnv(gomplateEnv, gomplateDefault), params...)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr

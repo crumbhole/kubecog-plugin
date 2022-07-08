@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: argocd-cm
 data:
-  size: [[ .base.size ]]
-  dns: [[ .base.dns.provider -]]
+  size: medium
+  dns: cloudflare

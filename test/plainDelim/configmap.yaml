@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  size: 🚨 .base.size 🐞
+  dns: 🚨 .base.dns.provider -🐞

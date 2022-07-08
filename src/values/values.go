@@ -11,12 +11,18 @@ import (
 // tells the system which cog files to read from
 const kubecogEnable = `./.kubecog.yaml`
 
-type kubecog struct {
-	Kubecog map[string]string `json:"kubecog"`
+type Delims struct {
+	Left  string `json:"left,omitempty"`
+	Right string `json:"right,omitempty"`
+}
+
+type Kubecog struct {
+	Kubecog    map[string]string `json:"kubecog"`
+	Delimiters *Delims           `json:"delimiters,omitempty"`
 }
 
 // Values is a function to get you a map of name: values.yaml
-func Values() (map[string]string, error) {
+func Values() (*Kubecog, error) {
 	contents, err := ioutil.ReadFile(kubecogEnable)
 	if e, ok := err.(*os.PathError); ok && e.Err == syscall.ENOENT {
 		print("No .kubecog.yaml\n")
@@ -25,7 +31,7 @@ func Values() (map[string]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	var kubecogPaths kubecog
-	err = yaml.Unmarshal(contents, &kubecogPaths)
-	return kubecogPaths.Kubecog, err
+	var kubecog Kubecog
+	err = yaml.Unmarshal(contents, &kubecog)
+	return &kubecog, err
 }

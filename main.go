@@ -35,14 +35,14 @@ func (s *scanner) scanDir(path string) error {
 }
 
 func main() {
-	vals, err := values.Values()
+	config, err := values.Values()
 	if err != nil {
 		log.Fatal(err)
 	}
-	if vals == nil {
+	if config == nil {
 		return
 	}
-	s := scanner{engine: engine.Engine{Values: vals}}
+	s := scanner{engine: engine.Engine{Config: config}}
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Fatal(err)
