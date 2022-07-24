@@ -9,4 +9,5 @@ RUN go build -buildvcs=false -o build/crumblecog-plugin
 FROM alpine as putter
 COPY --from=builder /build/build/crumblecog-plugin .
 COPY --from=builder /usr/local/bin/gomplate .
-ENTRYPOINT [ "mv", "crumblecog-plugin", "gomplate", "/custom-tools/" ]
+USER 999
+ENTRYPOINT [ "cp", "crumblecog-plugin", "gomplate", "/custom-tools/" ]
