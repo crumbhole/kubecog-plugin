@@ -57,4 +57,4 @@ jobs:
           file: ./Dockerfile
           push: true
           platforms: linux/amd64, linux/arm64
-          tags: ghcr.io/crumbhole/crumblecog-plugin:latest
+          tags: ghcr.io/crumbhole/kubecog-plugin:latest

@@ -52,4 +52,4 @@ jobs:
           file: ./Dockerfile
           push: false
           platforms: linux/amd64, linux/arm64
-          tags: ghcr.io/crumbhole/crumblecog-plugin:pull
+          tags: ghcr.io/crumbhole/kubecog-plugin:pull

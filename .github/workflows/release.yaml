@@ -27,7 +27,7 @@ jobs:
         goos: ${{ matrix.goos }}
         goarch: amd64
         goversion: "https://golang.org/dl/go1.18.1.linux-amd64.tar.gz"
-        binary_name: "crumblecog-plugin"
+        binary_name: "kubecog-plugin"
         extra_files: LICENSE README.md
   push_to_registry:
     name: Push Docker image to GitHub Packages
@@ -55,6 +55,6 @@ jobs:
           push: true
           platforms: linux/amd64, linux/arm64
           tags: |
-            ghcr.io/crumbhole/crumblecog-plugin:${{ env.GIT_TAG_NAME }}
-            ghcr.io/crumbhole/crumblecog-plugin:stable
-            ghcr.io/crumbhole/crumblecog-plugin:latest
+            ghcr.io/crumbhole/kubecog-plugin:${{ env.GIT_TAG_NAME }}
+            ghcr.io/crumbhole/kubecog-plugin:stable
+            ghcr.io/crumbhole/kubecog-plugin:latest
