@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"regexp"
 
-	"github.com/crumbhole/crumblecog-plugin/src/values"
+	"github.com/crumbhole/kubecog-plugin/src/values"
 )
 
 // valuesEnv is the name of the environment variable controlling where to find values yaml

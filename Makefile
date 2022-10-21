@@ -4,9 +4,9 @@ DEPS := $(shell find . -type f -name "*.go" -printf "%p ")
 
 unexport BW_SESSION
 unexport VAULT_ADDR
-unexport CRUMBLECOG_PATH
+unexport KUBECOG_PATH
 
-all: code-vet code-fmt test build/crumblecog-plugin
+all: code-vet code-fmt test build/kubecog-plugin
 
 clean:
 	$(RM) -rf build
@@ -21,7 +21,7 @@ test: get
 test_verbose: get
 	go test -v ./...
 
-build/crumblecog-plugin: $(DEPS)
+build/kubecog-plugin: $(DEPS)
 	mkdir -p build
 	go build -o build ./...
 

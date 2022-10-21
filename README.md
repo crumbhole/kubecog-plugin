@@ -1,6 +1,6 @@
-# crumblecog-plugin
+# Kubecog-plugin
 
-This is an init plugin for [argocd-lovely-plugin](https://github.com/crumbhole/argocd-lovely-plugin) to allow for templating in the crumblecog project.
+This is an init plugin for [argocd-lovely-plugin](https://github.com/crumbhole/argocd-lovely-plugin) to allow for templating in the kubecog project.
 
 ## Usage
 

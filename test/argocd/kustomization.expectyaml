@@ -5,7 +5,7 @@ resources:
 - https://raw.githubusercontent.com/argoproj/argo-cd/v2.3.3/manifests/ha/install.yaml
 - metrics.yaml
 - ingresses.yaml
-- crumblecog-core.yaml
+- kubecog-core.yaml
 - system-project.yaml
 - vault-k8s-auth.yaml
 - serviceaccount.yaml
@@ -19,7 +19,7 @@ patches:
   target:
     kind: Deployment
     name: argocd-repo-server
-- path: crumblecog-plugin.yaml
+- path: kubecog-plugin.yaml
   target:
     kind: Deployment
     name: argocd-repo-server
@@ -38,4 +38,3 @@ patchesJson6902:
     kind: Deployment
     name: argocd-server
   path: argo-server-insecure.yaml
-

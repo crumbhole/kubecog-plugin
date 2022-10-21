@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/crumbhole/crumblecog-plugin/src/engine"
-	"github.com/crumbhole/crumblecog-plugin/src/values"
+	"github.com/crumbhole/kubecog-plugin/src/engine"
+	"github.com/crumbhole/kubecog-plugin/src/values"
 	"log"
 	"os"
 	"path/filepath"

@@ -1,4 +1,4 @@
-module github.com/crumbhole/crumblecog-plugin
+module github.com/crumbhole/kubecog-plugin
 
 go 1.19
 
