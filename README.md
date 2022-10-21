@@ -8,7 +8,7 @@ Install into argocd alongside lovely and and add to ARGOCD_ENV_LOVELY_PREPROCESS
 
 You must place a .kubecog.yaml in the directory you want processing with this plugin, otherwise it will not do anything.
 
-It uses gomplate (go's templating language), the same as helm does. Left and right delimiters default to [[ and ]]. They can be overridden in .kubecog.yaml for your specific templates if that is convenient.
+It uses gomplate (go's templating language), the same as helm does. Left and right delimiters default to [[ and ]] to avoid the clash with the default helm delimiters. They can be overridden in .kubecog.yaml for your specific templates if that is helpful.
 
 Environment:
 
@@ -21,4 +21,3 @@ kubecog:
 delimiters: (all optional)
   left: <leftdelim>
   right: <rightdelim>
-
