@@ -14,6 +14,7 @@ clean:
 get: $(DEPS)
 	go get ./...
 	go get github.com/otiai10/copy
+	go get github.com/google/go-cmp/cmp
 
 test: get
 	go test ./...

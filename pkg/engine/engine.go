@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"regexp"
 
-	"github.com/crumbhole/kubecog-plugin/src/values"
+	"github.com/crumbhole/kubecog-plugin/pkg/kubecogConfig"
 )
 
 // valuesEnv is the name of the environment variable controlling where to find values yaml
@@ -30,12 +30,11 @@ func getEnv(name string, defaultVal string) string {
 // Engine is a 'class' to hold the values for doing template runs with a single set of variables
 // called values, over several golang templated files
 type Engine struct {
-	Config *values.Kubecog
+	Config *kubecogConfig.Kubecog
 }
 
 // Run will use the Engine's values to templatise one file, in place, given by path
 func (e *Engine) Run(path string) error {
-	fmt.Printf("Checking path %s\n", path)
 	kubecogRegexp := regexp.MustCompile(`\.kubecog\.yaml$`)
 	if kubecogRegexp.MatchString(path) {
 		return nil
@@ -57,7 +56,6 @@ func (e *Engine) Run(path string) error {
 	for name, contextPath := range e.Config.Kubecog {
 		params = append(params, `-c`, name+`=`+urlPrefix+contextPath)
 	}
-	fmt.Printf("Params are %v\n", params)
 	cmd := exec.Command(getEnv(gomplateEnv, gomplateDefault), params...)
 	var stderr bytes.Buffer
 	cmd.Stderr = &stderr
