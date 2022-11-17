@@ -2,7 +2,7 @@ package kubecogConfig
 
 import (
 	"errors"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"os"
 	"syscall"
@@ -37,13 +37,13 @@ type kubecogAlpha1 struct {
 }
 
 type kubecogBase struct {
-	APIVersion string            `yaml:"apiVersion"`
+	APIVersion string `yaml:"apiVersion"`
 	Rest       []byte
 }
 
 func loadV1alpha1(contents []byte) (*Kubecog, error) {
 	var kubecogA1 *kubecogAlpha1
-	err := yaml.UnmarshalStrict(contents, &kubecogA1)
+	err := yaml.Unmarshal(contents, &kubecogA1)
 	if err != nil {
 		return nil, err
 	}
