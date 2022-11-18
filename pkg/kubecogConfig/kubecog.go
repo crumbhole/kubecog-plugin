@@ -11,8 +11,6 @@ import (
 // kubecogEnable is the file that enables kubecog and
 // tells the system which cog files to read from
 const kubecogEnable = `./.kubecog.yaml`
-const kubecogKind = `KubecogConfig`
-const kubecogGroup = `kubecog.com`
 
 // KubecogUnknownVersion is the error returned when .kubecog.yaml doesn't know the Version
 var KubecogUnknownVersion = errors.New(".kubecog.yaml does not have a known Version")
