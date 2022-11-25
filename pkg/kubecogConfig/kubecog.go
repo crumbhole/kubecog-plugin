@@ -3,7 +3,6 @@ package kubecogConfig
 import (
 	"errors"
 	"gopkg.in/yaml.v3"
-	"io/ioutil"
 	"os"
 	"syscall"
 )
@@ -55,7 +54,7 @@ func loadV1alpha1(contents []byte) (*Kubecog, error) {
 
 // Values is a function to get you a map of name: values.yaml
 func Values() (*Kubecog, error) {
-	contents, err := ioutil.ReadFile(kubecogEnable)
+	contents, err := os.ReadFile(kubecogEnable)
 	if e, ok := err.(*os.PathError); ok && e.Err == syscall.ENOENT {
 		print("No .kubecog.yaml\n")
 		return nil, nil

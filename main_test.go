@@ -4,7 +4,6 @@ import (
 	"github.com/crumbhole/kubecog-plugin/pkg/engine"
 	"github.com/crumbhole/kubecog-plugin/pkg/kubecogConfig"
 	"github.com/otiai10/copy"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -35,11 +34,11 @@ func (c *checker) checkExpected(path string, info os.FileInfo, err error) error 
 	fileRegexp := regexp.MustCompile(`\.yaml$`)
 	if fileRegexp.MatchString(path) {
 		expectedPath := strings.Replace(path, `.yaml`, `.expectyaml`, 1)
-		got, err := ioutil.ReadFile(path)
+		got, err := os.ReadFile(path)
 		if err != nil {
 			return err
 		}
-		expected, err := ioutil.ReadFile(expectedPath)
+		expected, err := os.ReadFile(expectedPath)
 		if err != nil {
 			return err
 		}
@@ -85,7 +84,7 @@ func TestDirectories(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	dirs, err := ioutil.ReadDir(testsPathCopy)
+	dirs, err := os.ReadDir(testsPathCopy)
 	if err != nil {
 		t.Error(err)
 	}
