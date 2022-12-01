@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/crumbhole/kubecog-plugin/pkg/engine"
-	"github.com/crumbhole/kubecog-plugin/pkg/kubecogConfig"
+	"github.com/crumbhole/kubecog-plugin/pkg/kubecogconfig"
 	"github.com/otiai10/copy"
 	"os"
 	"path/filepath"
@@ -57,7 +57,7 @@ func (c *checker) checkDir(path string) error {
 	os.Chdir(path)
 	os.Setenv(`ARGOCD_ENV_KUBECOG_URL_PREFIX`, `file:///`+cwd+`/`+path+`/`)
 	defer os.Chdir(cwd)
-	config, err := kubecogConfig.Values()
+	config, err := kubecogconfig.Values()
 	if err != nil {
 		return err
 	}

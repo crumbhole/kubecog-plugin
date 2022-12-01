@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/crumbhole/kubecog-plugin/pkg/engine"
-	"github.com/crumbhole/kubecog-plugin/pkg/kubecogConfig"
+	"github.com/crumbhole/kubecog-plugin/pkg/kubecogconfig"
 	"log"
 	"os"
 	"path/filepath"
@@ -35,7 +35,7 @@ func (s *scanner) scanDir(path string) error {
 }
 
 func main() {
-	config, err := kubecogConfig.Values()
+	config, err := kubecogconfig.Values()
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,4 +1,4 @@
-package kubecogConfig
+package kubecogconfig
 
 import (
 	"errors"
@@ -11,14 +11,16 @@ import (
 // tells the system which cog files to read from
 const kubecogEnable = `./.kubecog.yaml`
 
-// KubecogUnknownVersion is the error returned when .kubecog.yaml doesn't know the Version
-var KubecogUnknownVersion = errors.New(".kubecog.yaml does not have a known Version")
+// ErrKubecogUnknownVersion is the error returned when .kubecog.yaml doesn't know the Version
+var ErrKubecogUnknownVersion = errors.New(".kubecog.yaml does not have a known Version")
 
+// Delims is the type for delimeter overrides in your .kubecog.yaml
 type Delims struct {
 	Left  string `yaml:"left,omitempty"`
 	Right string `yaml:"right,omitempty"`
 }
 
+// Kubecog is the type for the basic config in your .kubecog.yaml
 type Kubecog struct {
 	APIVersion string            `yaml:"apiVersion"`
 	Kubecog    map[string]string `yaml:"kubecog"`
@@ -73,7 +75,7 @@ func Values() (*Kubecog, error) {
 	case v1alpha1:
 		kubecog, err = loadV1alpha1(contents)
 	default:
-		err = KubecogUnknownVersion
+		err = ErrKubecogUnknownVersion
 	}
 	return kubecog, err
 }

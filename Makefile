@@ -6,7 +6,7 @@ unexport BW_SESSION
 unexport VAULT_ADDR
 unexport KUBECOG_PATH
 
-all: code-vet code-fmt test build/kubecog-plugin
+all: lint code-vet code-fmt test build/kubecog-plugin
 
 clean:
 	$(RM) -rf build

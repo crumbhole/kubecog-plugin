@@ -1,4 +1,4 @@
-package kubecogConfig
+package kubecogconfig
 
 import (
 	"github.com/google/go-cmp/cmp"
@@ -30,7 +30,7 @@ func TestNoFile(t *testing.T) {
 
 func TestErrors(t *testing.T) {
 	tests := map[string]error{
-		`test/wrongVersion`: KubecogUnknownVersion,
+		`test/wrongVersion`: ErrKubecogUnknownVersion,
 	}
 	for testDir, error := range tests {
 		t.Run(testDir, func(t *testing.T) {

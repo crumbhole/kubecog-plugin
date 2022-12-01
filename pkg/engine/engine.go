@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"regexp"
 
-	"github.com/crumbhole/kubecog-plugin/pkg/kubecogConfig"
+	"github.com/crumbhole/kubecog-plugin/pkg/kubecogconfig"
 )
 
 // valuesEnv is the name of the environment variable controlling where to find values yaml
@@ -30,7 +30,7 @@ func getEnv(name string, defaultVal string) string {
 // Engine is a 'class' to hold the values for doing template runs with a single set of variables
 // called values, over several golang templated files
 type Engine struct {
-	Config *kubecogConfig.Kubecog
+	Config *kubecogconfig.Kubecog
 }
 
 // Run will use the Engine's values to templatise one file, in place, given by path
