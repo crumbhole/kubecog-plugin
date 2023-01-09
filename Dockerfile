@@ -6,7 +6,7 @@ RUN go vet ./...
 RUN go test ./...
 RUN go build -buildvcs=false -o build/kubecog-plugin
 
-FROM alpine:3.17.0 as putter
+FROM alpine:3.17.1 as putter
 COPY --from=builder /build/build/kubecog-plugin .
 COPY --from=builder /usr/local/bin/gomplate .
 USER 999
