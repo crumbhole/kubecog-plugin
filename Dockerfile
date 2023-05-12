@@ -6,8 +6,6 @@ RUN go vet ./...
 RUN go test ./...
 RUN go build -buildvcs=false -o build/kubecog-plugin
 
-FROM alpine:3.18.0 as putter
-COPY --from=builder /build/build/kubecog-plugin .
-COPY --from=builder /usr/local/bin/gomplate .
-USER 999
-ENTRYPOINT [ "cp", "kubecog-plugin", "gomplate", "/custom-tools/" ]
+FROM ghcr.io/crumbhole/argocd-lovely-plugin-cmp-vault:0.17.0 as putter
+COPY --from=builder /build/build/kubecog-plugin /usr/local/bin
+COPY --from=builder /usr/local/bin/gomplate /usr/local/bin
