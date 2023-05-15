@@ -6,6 +6,6 @@ RUN go vet ./...
 RUN go test ./...
 RUN go build -buildvcs=false -o build/kubecog-plugin
 
-FROM ghcr.io/crumbhole/argocd-lovely-plugin-cmp-vault:0.17.0 as putter
+FROM ghcr.io/crumbhole/argocd-lovely-plugin-cmp-vault:0.18.0 as putter
 COPY --from=builder /build/build/kubecog-plugin /usr/local/bin
 COPY --from=builder /usr/local/bin/gomplate /usr/local/bin
