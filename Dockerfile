@@ -1,5 +1,5 @@
 FROM golang:1.21.4 as builder
-COPY --from=hairyhenderson/gomplate:v3.11.5-alpine /bin/gomplate /usr/local/bin/gomplate
+COPY --from=hairyhenderson/gomplate:v3.11.6-alpine /bin/gomplate /usr/local/bin/gomplate
 ADD . /build
 WORKDIR /build
 RUN go vet ./...
