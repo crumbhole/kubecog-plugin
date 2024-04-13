@@ -21,7 +21,7 @@ jobs:
         args: -O gomplate https://github.com/hairyhenderson/gomplate/releases/download/v3.11.1/gomplate_linux-amd64
     - name: Set gomplate executable
       run: sudo chmod +x gomplate && sudo mv gomplate /usr/local/bin/gomplate
-    - uses: wangyoucao577/go-release-action@v1.48
+    - uses: wangyoucao577/go-release-action@v1.50
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         goos: ${{ matrix.goos }}
