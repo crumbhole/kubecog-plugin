@@ -1,4 +1,4 @@
-FROM golang:1.22.0 as builder
+FROM golang:1.23.2 as builder
 COPY --from=hairyhenderson/gomplate:v3.11.7-alpine /bin/gomplate /usr/local/bin/gomplate
 ADD . /build
 WORKDIR /build
