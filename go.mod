@@ -1,9 +1,11 @@
 module github.com/crumbhole/kubecog-plugin
 
-go 1.20
+go 1.21
+
+toolchain go1.24.0
 
 require (
-	github.com/google/go-cmp v0.6.0
+	github.com/google/go-cmp v0.7.0
 	github.com/otiai10/copy v1.14.0
 	gopkg.in/yaml.v3 v3.0.1
 )
